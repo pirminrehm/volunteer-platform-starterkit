@@ -1,0 +1,28 @@
+{
+  "npmScope": "wir-vs-virus",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "volunteer-app": {
+      "tags": []
+    },
+    "volunteer-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["volunteer-app"]
+    },
+    "api": {
+      "tags": []
+    },
+    "api-interfaces": {
+      "tags": []
+    }
+  }
+}

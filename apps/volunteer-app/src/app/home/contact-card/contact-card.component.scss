@@ -1,0 +1,148 @@
+@import 'variables';
+
+mat-card {
+  margin-bottom: 20px;
+  border-radius: 8px;
+  padding: 24px 20px 20px 20px;
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+
+    .title-container {
+      display: flex;
+      // justify-content: space-between;
+      // flex-flow: row wrap;
+      align-items: stretch;
+      font-size: 18px;
+      line-height: 24px;
+      letter-spacing: 0.1px;
+      // font-weight: 500;
+
+      .title {
+        padding-right: 2 * $basic-spacer;
+        min-width: 50%;
+      }
+
+      .date {
+        text-align: right;
+        margin-left: auto;
+        min-width: 70px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
+  }
+
+  mat-card-content {
+    letter-spacing: 0.25px;
+
+    .description,
+    .detail-content {
+      color: $text-subdude;
+    }
+
+    .description {
+      margin: 16px 0 16px;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+
+      @media (max-width: $breakpoint-xs) {
+        flex-direction: column;
+      }
+
+      > div {
+        width: 50%;
+
+        @media (max-width: $breakpoint-xs) {
+          width: 100%;
+        }
+
+        .detail-content {
+          margin: 8px 8px 8px 0;
+          mat-chip {
+            transition: none !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          // disable hover effect on chip
+          .mat-standard-chip {
+            &:hover::after,
+            &:active::after,
+            &:focus::after {
+              opacity: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.mat-chip.mat-standard-chip.mat-chip-disabled {
+  opacity: 1;
+  text-overflow: ellipsis;
+  min-height: 28px;
+}
+
+.mat-standard-chip {
+  border-radius: 4px;
+  padding: 2px 12px;
+  background-color: #e8eaed;
+}
+
+mat-expansion-panel {
+  margin-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding-top: 8px;
+
+  mat-expansion-panel-header {
+    padding: 0 8px 0 0 !important;
+    font-size: 14px;
+    font-weight: 500;
+
+    mat-icon.mat-icon {
+      color: $primary;
+      margin-right: 1rem;
+      line-height: 19px;
+    }
+  }
+}
+
+.mat-expansion-panel-header:hover {
+  background: none !important;
+}
+
+.expand-card {
+  .expand-card-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-top: solid 1px #f5f5f5;
+    padding-top: 1rem;
+    margin-top: 1rem;
+
+    mat-icon:first-child {
+      margin-right: 1rem;
+    }
+
+    .card-spacer {
+      flex: 1 1 auto;
+    }
+  }
+
+  .expand-card-body {
+    height: 0;
+    overflow: hidden;
+
+    &.expanded {
+      height: auto;
+      margin-top: 1rem;
+    }
+  }
+}

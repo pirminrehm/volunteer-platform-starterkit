@@ -1,0 +1,51 @@
+@import '../styles/variables.scss';
+
+.header {
+  width: 100%;
+  position: relative;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+
+  .content-center {
+    width: 960px;
+    margin: 0 4 * $basic-spacer;
+
+    @media (max-width: $breakpoint-xl) {
+      width: 100%;
+    }
+  }
+
+  .nav-bar {
+    margin-top: 1.5rem;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+
+    img.app-logo {
+      height: 2.5rem;
+      cursor: pointer;
+      outline: 0;
+    }
+
+    .links {
+      float: right;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: right;
+      text-align: right;
+
+      @media (max-width: $breakpoint-xs) {
+        flex-direction: column;
+      }
+
+      a {
+        color: #212121;
+        text-decoration: none;
+        padding-left: 3rem;
+        font-size: 1rem;
+        line-height: 28px;
+      }
+    }
+  }
+}

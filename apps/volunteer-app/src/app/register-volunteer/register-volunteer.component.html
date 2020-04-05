@@ -1,0 +1,184 @@
+<wir-vs-virus-header></wir-vs-virus-header>
+
+<main>
+  <a class="back-navigation" [routerLink]="'/home/volunteers'">
+    <img src="/assets/chevron_left-24px.svg" />Zurück
+  </a>
+
+  <h1 class="title">Als Helfer registrieren</h1>
+
+  <p class="description">
+    Um eine Anzeige online zu stellen, füllen Sie bitte folgende Felder aus.
+  </p>
+
+  <form [formGroup]="volunteerForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
+      <input
+        matInput
+        placeholder="Maxim Muster"
+        formControlName="name"
+        required
+      />
+      <mat-error *ngIf="volunteerForm.get('name').errors"
+        >Vor- & Nachname ist erforderlich</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Postleitzahl</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="12345"
+        formControlName="zipCode"
+        required
+      />
+      <mat-error
+        *ngIf="
+          volunteerForm.get('zipCode').errors &&
+          !volunteerForm.get('zipCode').hasError('notExists')
+        "
+      >
+        PLZ ist erforderlich
+      </mat-error>
+      <mat-error *ngIf="volunteerForm.get('zipCode').hasError('notExists')">
+        PLZ existiert nicht
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ein paar Worte zu Ihren medizinischen Kenntnissen</mat-label>
+      <textarea
+        matInput
+        formControlName="knowledge"
+        placeholder="Ich bin gelernte..."
+        maxlength="300"
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="4"
+      ></textarea>
+      <mat-hint align="end">
+        {{ volunteerForm.get('knowledge').value?.length || 0 }}/300
+      </mat-hint>
+      <mat-error *ngIf="volunteerForm.get('knowledge').errors"
+        >Angabe der Kenntnisse ist erforderlich</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Telefonnummer</mat-label>
+      <input
+        matInput
+        type="tel"
+        placeholder="0176 1234567"
+        formControlName="phone"
+        required
+      />
+      <mat-error *ngIf="volunteerForm.get('phone').errors">
+        Telefonnummer ist erforderlich</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>E-Mail</mat-label>
+      <input
+        matInput
+        type="email"
+        placeholder="maxim.muster@example.com"
+        formControlName="mail"
+        required
+      />
+      <mat-error *ngIf="volunteerForm.get('mail').errors"
+        >E-Mail Adresse ist erforderlich</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Ihre Qualifikationen</mat-label>
+      <mat-chip-list #chipList>
+        <mat-chip
+          *ngFor="let qualification of qualifications"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(qualification)"
+        >
+          {{ qualification }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Allgemeinmedizin"
+          #qualificationInput
+          formControlName="qualifications"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"
+        />
+      </mat-chip-list>
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selected($event)"
+      >
+        <mat-option
+          *ngFor="let qualification of filteredQualifications | async"
+          [value]="qualification"
+        >
+          {{ qualification }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-error
+      *ngIf="
+        this.volunteerForm.get('qualifications').touched &&
+        this.qualifications.length === 0
+      "
+      >Angabe von Qualifikationen erforderlich
+    </mat-error>
+
+    <wir-vs-virus-info-box [type]="'warn'">
+      Ihre Anzeige ist für 30 Tage gültig und wird aus Datenschutzgründen
+      anschließend automatisch entfernt
+    </wir-vs-virus-info-box>
+
+    <mat-checkbox color="primary" formControlName="agreePrivacy"
+      >Mit Betätigung des "Hilfsangebot Online stellen" Knopfes erkläre ich
+      meine Einwilligung in die Verarbeitung meiner Daten gemäß der
+      datenschutzrechtlichen Einwilligungserklärung. Ich erkläre mich
+      einverstanden, per E-Mail kontaktiert zu werden. Mit der Kontaktaufnahme
+      nehme ich die
+      <a target="_blanc" href="/privacy">Datenschutzerklärung</a> zur
+      Kenntnis.<mat-error *ngIf="showPrivacyError"
+        >Sie müssen der Datenschutzerklärung zustimmen</mat-error
+      ></mat-checkbox
+    >
+
+    <re-captcha resolved="" formControlName="recaptcha" #captchaRef="reCaptcha">
+    </re-captcha>
+    <mat-error
+      *ngIf="
+        volunteerForm.get('recaptcha').errors &&
+        volunteerForm.get('recaptcha').touched
+      "
+      >Bitte bestätigen Sie, dass Sie kein Roboter sind</mat-error
+    >
+
+    <div *ngFor="let error of errorMessages" class="error-message">
+      <mat-error *ngFor="let constraint of error.constraints | keyvalue">
+        {{ constraint.value }}
+      </mat-error>
+    </div>
+
+    <button
+      class="submit-button"
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="sendingRequest"
+    >
+      <mat-icon *ngIf="sendingRequest"
+        ><mat-spinner diameter="20" color="primary"> </mat-spinner
+      ></mat-icon>
+      Hilfsangebot online stellen
+    </button>
+  </form>
+</main>

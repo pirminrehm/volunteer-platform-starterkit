@@ -1,0 +1,81 @@
+@import 'variables';
+
+.spinner-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 15 * $basic-spacer;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 4 * $basic-spacer;
+
+  .content-area {
+    width: 100%;
+    max-width: $breakpoint-lg;
+  }
+}
+
+a:hover {
+  color: $primary;
+}
+
+button {
+  text-transform: uppercase;
+  line-height: 1.14;
+  letter-spacing: 1.25px;
+}
+
+.mat-checkbox-inner-container {
+  margin: 0 1rem 0 0 !important;
+}
+
+.mat-checkbox-layout {
+  white-space: normal !important;
+  margin-bottom: 1rem;
+}
+
+.mat-checkbox-background,
+.mat-checkbox-frame {
+  top: 5px !important;
+  bottom: -5px !important;
+}
+
+.mat-checkbox .mat-checkbox-ripple {
+  top: calc(50% - 15px) !important;
+}
+
+span.mat-checkbox-label {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: 0.25px;
+  color: #757575;
+}
+
+.qualifications-dialog {
+  width: 480px;
+
+  @media (max-width: $breakpoint-md) {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  button {
+    text-transform: uppercase;
+    color: $primary;
+  }
+}
+
+mat-chip.mat-chip {
+  height: auto !important;
+}
