@@ -1,5 +1,35 @@
 @import 'variables';
 
+html,
+body {
+  min-height: 100%;
+  background-color: #f7f7f7;
+
+  /* Make type rendering look crisper */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Disable auto-enlargement of small text in Safari */
+  text-size-adjust: 100%;
+
+  /* Enable kerning and optional ligatures */
+  text-rendering: optimizeLegibility;
+}
+body {
+  margin: 0;
+  overflow-y: scroll;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: $primary;
+}
+
 .spinner-container {
   width: 100%;
   position: relative;
