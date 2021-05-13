@@ -152,7 +152,8 @@
       ></mat-checkbox
     >
 
-    <re-captcha resolved="" formControlName="recaptcha" #captchaRef="reCaptcha">
+    <!-- // disabled: recaptcha -->
+    <!-- <re-captcha resolved="" formControlName="recaptcha" #captchaRef="reCaptcha">
     </re-captcha>
     <mat-error
       *ngIf="
@@ -161,6 +162,7 @@
       "
       >Bitte bestätigen Sie, dass Sie kein Roboter sind</mat-error
     >
+    -->
 
     <div *ngFor="let error of errorMessages" class="error-message">
       <mat-error *ngFor="let constraint of error.constraints | keyvalue">

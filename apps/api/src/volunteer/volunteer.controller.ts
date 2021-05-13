@@ -59,7 +59,8 @@ export class VolunteerController {
     const zipcode = volunteer.zipcode;
     let locationData: LocationInfo;
 
-    await this.validateCaptcha(volunteer.recaptcha);
+    // disabled: recaptcha
+    // await this.validateCaptcha(volunteer.recaptcha);
 
     try {
       locationData = await this.locationService.getLocationInfoByZipcode(
@@ -81,12 +82,15 @@ export class VolunteerController {
     };
 
     // optimistic async, don't wait for response
+    /**
+     * disabled: mail service
     this.mailService.sendRegistrationMail(
       volunteerToSave.name,
       volunteerToSave.email,
       'volunteer',
       volunteerToSave.privateUuid
     );
+    */
 
     const saved = await this.volunteerService.save(volunteerToSave);
     Logger.log(

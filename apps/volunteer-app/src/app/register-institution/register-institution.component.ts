@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { customErrorCodes, Institution } from '@wir-vs-virus/api-interfaces';
-import { RecaptchaComponent } from 'ng-recaptcha';
+import {
+  customErrorCodes,
+  PostInstitution
+} from '@wir-vs-virus/api-interfaces';
+// import { RecaptchaComponent } from 'ng-recaptcha';
 import { first } from 'rxjs/operators';
 import { InstitutionService } from '../services/institution.service';
 import { phoneRegExp, zipCodeRegExp } from '../../common/utils';
@@ -40,12 +43,13 @@ export class RegisterInstitutionComponent implements OnInit {
       Validators.email,
       Validators.maxLength(70)
     ]),
-    agreePrivacy: new FormControl(false, Validators.requiredTrue),
-    recaptcha: new FormControl(null, [Validators.required])
+    agreePrivacy: new FormControl(false, Validators.requiredTrue)
+    // disabled: recaptcha
+    // recaptcha: new FormControl(null, [Validators.required])
   });
-
-  @ViewChild(RecaptchaComponent)
-  captchaRef: RecaptchaComponent;
+  // disabled: recaptcha
+  // @ViewChild(RecaptchaComponent)
+  // captchaRef: RecaptchaComponent;
 
   sendingRequest = false;
   errorMessages: { target; value; property; children; constraints }[] = [];
@@ -58,7 +62,8 @@ export class RegisterInstitutionComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    this.institutionForm.get('recaptcha').markAllAsTouched();
+    // disabled: recaptcha
+    // this.institutionForm.get('recaptcha').markAllAsTouched();
     console.log(this.institutionForm.value);
     this.showPrivacyError = !!this.institutionForm.get('agreePrivacy').errors;
     if (!this.institutionForm.valid) {
@@ -66,7 +71,7 @@ export class RegisterInstitutionComponent implements OnInit {
     }
     console.log(this.institutionForm.value);
     const val = this.institutionForm.value;
-    const institution: Institution = {
+    const institution: PostInstitution = {
       contact: {
         name: val.contactName,
         email: val.contactMail,
@@ -75,7 +80,9 @@ export class RegisterInstitutionComponent implements OnInit {
       description: val.description,
       name: val.institutionName,
       zipcode: val.zipCode,
-      recaptcha: val.recaptcha,
+      // disabled: recaptcha
+      // recaptcha: val.recaptcha,
+      recaptcha: '',
       privacyAccepted: val.agreePrivacy
     };
 
@@ -91,8 +98,8 @@ export class RegisterInstitutionComponent implements OnInit {
         err => {
           this.sendingRequest = false;
           console.error(err.error.message);
-          this.errorMessages = err.error.message;
-          this.captchaRef.reset();
+          // disabled: recaptcha
+          // this.captchaRef.reset();
 
           switch (err.error.message) {
             case customErrorCodes.ZIP_NOT_FOUND:

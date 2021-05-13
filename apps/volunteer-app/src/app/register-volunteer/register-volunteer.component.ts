@@ -8,11 +8,12 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { customErrorCodes, PostVolunteer } from '@wir-vs-virus/api-interfaces';
-import { RecaptchaComponent } from 'ng-recaptcha';
+// import { RecaptchaComponent } from 'ng-recaptcha';
 import { Observable } from 'rxjs';
-import { first, map, startWith } from 'rxjs/operators';
+import { first, map, startWith, tap } from 'rxjs/operators';
 import { VolunteerService } from '../services/volunteer.service';
 import { phoneRegExp, zipCodeRegExp } from '../../common/utils';
+import { medicalQualifications } from './medical-qualifications';
 
 @Component({
   selector: 'wir-vs-virus-register-volunteer',
@@ -42,12 +43,14 @@ export class RegisterVolunteerComponent implements OnInit {
       Validators.maxLength(70)
     ]),
     qualifications: new FormControl(''),
-    agreePrivacy: new FormControl(false, Validators.requiredTrue),
-    recaptcha: new FormControl(null, [Validators.required])
+    agreePrivacy: new FormControl(false, Validators.requiredTrue)
+    // disabled: recaptcha
+    // recaptcha: new FormControl(null, [Validators.required])
   });
 
-  @ViewChild(RecaptchaComponent)
-  captchaRef: RecaptchaComponent;
+  // disabled: recaptcha
+  // @ViewChild(RecaptchaComponent)
+  // captchaRef: RecaptchaComponent;
 
   @ViewChild('qualificationInput') qualificationInput: ElementRef<
     HTMLInputElement
@@ -59,7 +62,7 @@ export class RegisterVolunteerComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   filteredQualifications: Observable<string[]>;
   qualifications: string[] = [];
-  allQualifications: string[] = this.getQualifications();
+  allQualifications: string[] = medicalQualifications;
   sendingRequest = false;
   errorMessages: { target; value; property; children; constraints }[] = [];
 
@@ -83,7 +86,8 @@ export class RegisterVolunteerComponent implements OnInit {
   }
 
   onSubmit() {
-    this.volunteerForm.get('recaptcha').markAllAsTouched();
+    // disabled: recaptcha
+    // this.volunteerForm.get('recaptcha').markAllAsTouched();
     this.showPrivacyError = !!this.volunteerForm.get('agreePrivacy').errors;
     if (!this.volunteerForm.valid || this.qualifications.length === 0) {
       return;
@@ -98,7 +102,9 @@ export class RegisterVolunteerComponent implements OnInit {
       name: val.name,
       phone: val.phone,
       zipcode: Number(val.zipCode),
-      recaptcha: val.recaptcha,
+      // disabled: recaptcha
+      // recaptcha: val.recaptcha,
+      recaptcha: '',
       privacyAccepted: val.agreePrivacy
     };
     console.log(volunteer);
@@ -106,7 +112,7 @@ export class RegisterVolunteerComponent implements OnInit {
     this.sendingRequest = true;
     this.volunteerService
       .create(volunteer)
-      .pipe(first())
+      .pipe(first(), tap(console.log))
       .subscribe(
         res => {
           console.log(res);
@@ -115,8 +121,8 @@ export class RegisterVolunteerComponent implements OnInit {
         err => {
           this.sendingRequest = false;
           console.error(err.error.message);
-          this.errorMessages = err.error.message;
-          this.captchaRef.reset();
+          // disabled: recaptcha
+          // this.captchaRef.reset();
 
           switch (err.error.message) {
             case customErrorCodes.ZIP_NOT_FOUND:

@@ -59,7 +59,8 @@ export class InstitutionController {
     const zipcode = institution.zipcode;
     let locationData: LocationInfo;
 
-    await this.validateCaptcha(institution.recaptcha);
+    // disabled: recaptcha
+    // await this.validateCaptcha(institution.recaptcha);
 
     try {
       locationData = await this.locationService.getLocationInfoByZipcode(
@@ -81,12 +82,15 @@ export class InstitutionController {
     };
 
     // optimistic async, don't wait for response
+    /**
+     * disabled: mail service
     this.mailService.sendRegistrationMail(
       institutionToSave.contact.name,
       institutionToSave.contact.email,
       'institution',
       institutionToSave.privateUuid
     );
+    */
 
     const saved = await this.institutionService.save(institutionToSave);
     Logger.log(
