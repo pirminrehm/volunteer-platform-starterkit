@@ -100,6 +100,12 @@ export class RegisterInstitutionComponent implements OnInit {
           console.error(err.error.message);
           // disabled: recaptcha
           // this.captchaRef.reset();
+          this.errorMessages = undefined;
+          const validatorErrors = err.error.message[0]?.children;
+          if (validatorErrors) {
+            this.errorMessages = validatorErrors;
+            return;
+          }
 
           switch (err.error.message) {
             case customErrorCodes.ZIP_NOT_FOUND:

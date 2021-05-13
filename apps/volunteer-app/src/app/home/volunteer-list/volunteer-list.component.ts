@@ -45,7 +45,6 @@ export class VolunteerListComponent implements OnInit, OnDestroy {
       .getAll(searchTerm, searchPLZ, searchRadius)
       .pipe(
         takeUntil(this.destroyed$),
-        tap(res => console.log(res)),
         map(res => res.sort(this.sortByNewestDate)),
         tap(() => (this.loading = false))
       )
