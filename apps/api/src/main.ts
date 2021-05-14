@@ -25,7 +25,7 @@ async function bootstrap() {
   app.use(helmet());
 
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.port || 3333;
+  const port = process.env.PORT || 3333;
 
   // ensure that all endpoints are protected from receiving incorrect data
   app.useGlobalPipes(new ValidationPipe());

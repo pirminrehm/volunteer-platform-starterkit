@@ -21,6 +21,12 @@
   2. `nx serve api` (backend)
 - go to http://localhost:4200/
 
+## Deployment
+
+In addition to the envrionment variables defined for local development, specify:
+
+- `PORT` (default 3333)
+
 # Licence:
 
 This Project is liceced under [MIT licence](https://github.com/pirminrehm/volunteer-platform-starterkit/blob/master/LICENSE),
