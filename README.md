@@ -4,14 +4,15 @@
 
 - you have node.js 12 or later installed
 - clone the project and go into project folder `cd volunteer-platform-starterkit`
+- by default, sendgrid and recaptcha integration are commented out
 - `npm install`
 - `npm install -g @nrwl/cli`
 - add `.env` file with local variables in root directory:
 
   - `MONGO_CONNECTION=<MONGO_CONNECTION_URL>`
-  - `SENDGRID_API_KEY=<SENDGRID_API_KEY>`
-  - `RECAPTCHA_KEY=<RECAPTCHA_KEY>`
-  - `HOST_URL=localhost:4200`
+  - `SENDGRID_API_KEY=<SENDGRID_API_KEY>` (if you enable sendgrind)
+  - `HOST_URL=localhost:4200` (if you enable sendgrind, used for the link in the mail)
+  - `RECAPTCHA_KEY=<RECAPTCHA_KEY>` (if you enable recaptcha)
 
 - add your reCaptcha sitekey in the angular `environment.ts` file
 
