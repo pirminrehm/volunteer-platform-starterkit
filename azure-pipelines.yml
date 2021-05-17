@@ -95,4 +95,3 @@ stages:
         ConnectedServiceName: c80324fe-7ac1-4722-8e5c-38faa4f3f1dd
         Action: Start Azure App Service
         WebAppName: archg-test12
-  ...
