@@ -9,9 +9,12 @@ trigger: [master, develop]
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'df6cb254-c8ee-472f-853a-dfaae5783270'
+  - group: archg
+  - name: azureSubscription
+    value: 'df6cb254-c8ee-472f-853a-dfaae5783270'
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  - name: vmImageName
+    value: 'ubuntu-latest'
 
 stages:
 - stage: Build
@@ -51,3 +54,46 @@ stages:
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
+
+stages:
+- stage: deploy
+  displayName: deploy to test
+  jobs:
+  - job: Job_1
+    displayName: Agent job 1
+    pool:
+      vmImage: ubuntu-20.04
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: Download Pipeline Artifact
+      inputs:
+        source: specific
+        project: 31e75793-33d8-42b9-aa6f-a27ee3e07838
+        pipeline: 7
+        preferTriggeringPipeline: true
+        artifact: drop
+        path: $(System.DefaultWorkingDirectory)
+    - task: AzureAppServiceManage@0
+      displayName: 'Stop Azure App Service: archg-test12'
+      enabled: False
+      inputs:
+        ConnectedServiceName: c80324fe-7ac1-4722-8e5c-38faa4f3f1dd
+        Action: Stop Azure App Service
+        WebAppName: archg-test12
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Azure App Service Deploy: archg-test121'
+      inputs:
+        ConnectedServiceName: c80324fe-7ac1-4722-8e5c-38faa4f3f1dd
+        WebAppKind: webAppLinux
+        WebAppName: archg-test121
+        RuntimeStack: NODE|14-lts
+        StartupCommand: npm start
+        AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
+    - task: AzureAppServiceManage@0
+      displayName: 'Start Azure App Service: archg-test12'
+      enabled: False
+      inputs:
+        ConnectedServiceName: c80324fe-7ac1-4722-8e5c-38faa4f3f1dd
+        Action: Start Azure App Service
+        WebAppName: archg-test12
+  ...
