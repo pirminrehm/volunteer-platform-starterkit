@@ -80,11 +80,11 @@ stages:
         Action: Stop Azure App Service
         WebAppName: archg-test12
     - task: AzureRmWebAppDeployment@4
-      displayName: 'Azure App Service Deploy: archg-test121'
+      displayName: 'Azure App Service Deploy: archg-test12'
       inputs:
         ConnectedServiceName: c80324fe-7ac1-4722-8e5c-38faa4f3f1dd
         WebAppKind: webAppLinux
-        WebAppName: archg-test121
+        WebAppName: archg-test12
         RuntimeStack: NODE|14-lts
         StartupCommand: npm start
         AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
