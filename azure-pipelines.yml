@@ -55,7 +55,6 @@ stages:
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       artifact: drop
 
-stages:
 - stage: deploy
   displayName: deploy to test
   jobs:
