@@ -58,77 +58,85 @@ stages:
   - stage: deployTest
     displayName: Deploy to Test
     jobs:
-      - job: Deploy
+      - deployment: Deploy
         displayName: Deploy
         pool:
           vmImage: ubuntu-20.04
         variables:
           webAppName: archg-prepared
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              buildType: 'current'
-              artifactName: 'drop'
-              targetPath: '$(System.DefaultWorkingDirectory)'
-          - task: AzureAppServiceManage@0
-            displayName: 'Stop Azure App Service: $(webAppName)'
-            enabled: False
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              Action: Stop Azure App Service
-              WebAppName: $(webAppName)
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: $(webAppName)'
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              WebAppKind: webAppLinux
-              WebAppName: $(webAppName)
-              RuntimeStack: NODE|14-lts
-              StartupCommand: npm start
-              AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
-          - task: AzureAppServiceManage@0
-            displayName: 'Start Azure App Service: $(webAppName)'
-            enabled: False
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              Action: Start Azure App Service
-              WebAppName: $(webAppName)
+        environment: 'archg-prepared-test'
+        strategy:
+          runOnce:
+           deploy:
+            steps:
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'drop'
+                  targetPath: '$(System.DefaultWorkingDirectory)'
+              - task: AzureAppServiceManage@0
+                displayName: 'Stop Azure App Service: $(webAppName)'
+                enabled: False
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  Action: Stop Azure App Service
+                  WebAppName: $(webAppName)
+              - task: AzureRmWebAppDeployment@4
+                displayName: 'Azure App Service Deploy: $(webAppName)'
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  WebAppKind: webAppLinux
+                  WebAppName: $(webAppName)
+                  RuntimeStack: NODE|14-lts
+                  StartupCommand: npm start
+                  AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
+              - task: AzureAppServiceManage@0
+                displayName: 'Start Azure App Service: $(webAppName)'
+                enabled: False
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  Action: Start Azure App Service
+                  WebAppName: $(webAppName)
 
   - stage: deployProd
     displayName: Deploy to Prod
     jobs:
-      - job: Deploy
+      - deployment: Deploy
         displayName: Deploy
         pool:
           vmImage: ubuntu-20.04
         variables:
           webAppName: archg-prepared-prod
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              buildType: 'current'
-              artifactName: 'drop'
-              targetPath: '$(System.DefaultWorkingDirectory)'
-          - task: AzureAppServiceManage@0
-            displayName: 'Stop Azure App Service: $(webAppName)'
-            enabled: False
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              Action: Stop Azure App Service
-              WebAppName: $(webAppName)
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: $(webAppName)'
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              WebAppKind: webAppLinux
-              WebAppName: $(webAppName)
-              RuntimeStack: NODE|14-lts
-              StartupCommand: npm start
-              AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
-          - task: AzureAppServiceManage@0
-            displayName: 'Start Azure App Service: $(webAppName)'
-            enabled: False
-            inputs:
-              azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
-              Action: Start Azure App Service
-              WebAppName: $(webAppName)
+        environment: 'archg-prepared-prod'
+        strategy:
+          runOnce:
+           deploy:
+            steps:
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  artifactName: 'drop'
+                  targetPath: '$(System.DefaultWorkingDirectory)'
+              - task: AzureAppServiceManage@0
+                displayName: 'Stop Azure App Service: $(webAppName)'
+                enabled: False
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  Action: Stop Azure App Service
+                  WebAppName: $(webAppName)
+              - task: AzureRmWebAppDeployment@4
+                displayName: 'Azure App Service Deploy: $(webAppName)'
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  WebAppKind: webAppLinux
+                  WebAppName: $(webAppName)
+                  RuntimeStack: NODE|14-lts
+                  StartupCommand: npm start
+                  AppSettings: -port $(WebAppDefaultPort) -MONGO_CONNECTION $(MongoConnection)
+              - task: AzureAppServiceManage@0
+                displayName: 'Start Azure App Service: $(webAppName)'
+                enabled: False
+                inputs:
+                  azureSubscription: 'Visual Studio Enterprise-Abonnement – MPN (cdf35a02-89ca-450a-bcf0-f03f9302b1d0)'
+                  Action: Start Azure App Service
+                  WebAppName: $(webAppName)
