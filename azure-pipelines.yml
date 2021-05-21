@@ -66,14 +66,10 @@ stages:
           webAppName: archg-prepared
         steps:
           - task: DownloadPipelineArtifact@2
-            displayName: Download Pipeline Artifact
             inputs:
-              source: specific
-              project: 31e75793-33d8-42b9-aa6f-a27ee3e07838
-              pipeline: 7
-              preferTriggeringPipeline: true
-              artifact: drop
-              path: $(System.DefaultWorkingDirectory)
+              buildType: 'current'
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)'
           - task: AzureAppServiceManage@0
             displayName: 'Stop Azure App Service: $(webAppName)'
             enabled: False
@@ -109,14 +105,10 @@ stages:
           webAppName: archg-prepared-prod
         steps:
           - task: DownloadPipelineArtifact@2
-            displayName: Download Pipeline Artifact
             inputs:
-              source: specific
-              project: 31e75793-33d8-42b9-aa6f-a27ee3e07838
-              pipeline: 7
-              preferTriggeringPipeline: true
-              artifact: drop
-              path: $(System.DefaultWorkingDirectory)
+              buildType: 'current'
+              artifactName: 'drop'
+              targetPath: '$(System.DefaultWorkingDirectory)'
           - task: AzureAppServiceManage@0
             displayName: 'Stop Azure App Service: $(webAppName)'
             enabled: False
